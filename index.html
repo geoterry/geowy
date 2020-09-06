@@ -1,68 +1,112 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weiyu (Terry) YU</title>
     <link rel="stylesheet" href="reset.css">
+
     <style>
-      /* 头部主体和底部的共用设置 */
-      header, main, footer{
-        margin: 0 auto;
-      }
-      
-      /* 设置头部 */
-      header{
-        height: 80px; 
-        background-color: #6492CE;
-      }
-      
-      /* 设置主体 */
-      main{
-        height: 1150px; 
-        background-color: white;
-        margin: 20px auto;
-      }
-      
-      /* 设置主体部分左侧边栏 */
-      aside{
-        float: left;
-        width: 30%;
-        height: 100%;
-        background-color: white;
-      }
-      
-      /* 设置主体部分右侧主体 */
-      article{
-        float: left;
-        width: 70%;
-        height: 100%;
-        background-color: #F7F7F7;
-      }
-      
-      /* 设置底部 */
-      footer{
-        height: 50px; 
-        background-color: #6492CE;
-      }
+        body{
+            /* 设置字体 */
+            font-size: 14px;
+        }
+
+        /* 设置外部容器样式 */
+        .top-bar-wrapper{
+            /* 设置宽度 */
+            width: 100%;
+            /* 设置外部容器的背景颜色 */
+            background-color: #6492CE; 
+            /* 设置外部容器的高度 */
+            height: 70px;
+            /* 设置行高（可以顶替设置外部容器的高度），确保文字居中 */
+            line-height: 70px;
+            /* 设置下边框 */
+            border-bottom: 10px #B3E0F5 solid
+        }
+
+        /* 设置内部容器 */
+        .top-bar{
+            /* 固定宽度 */
+            width: 1080px;
+            /* 设置水平居中 */
+            margin: 0 auto
+        }
+
+        /* 设置shortcut */
+        .shortcut{
+            float: right;
+        }
+
+        /* 设置li */
+        .shortcut li{
+            float: left;
+        }
+
+        /* 设置top-bar下a和i的字体 */
+        .top-bar a,
+        .top-bar i{
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* 设置top-bar下a被鼠标指上后的字体变化 */
+        .top-bar a:hover{
+            color: #B3E0F5;
+        }
+
+        /* 设置top-bar下分割线的样式 */
+        .shortcut .line{
+            width: 2px;
+            height: 18px;
+            background-color: white;
+            margin: 26px 30px; /* 26px是距离顶端的距离；30px是与字体之间的距离 */
+        }
     </style>
-  </head>
-  <body bgcolor="#B3E0F5">
-    <!-- 创建头部 -->
-    <header></header>
-    
-    <!-- 创建网页主体-->
-    <main>
-      <!-- 左侧边栏 -->
-      <aside>
-        Weiyu (Terry) Yu is currently a research fellow at the Geography and Environmental Science, University of Southampton. Terry has a background in applied geographical information systems and remote sensing. His main research interests focus on spatial analysis and modelling applications, particularly with regard to the environment, population and public health topics.
-      </aside>
-      
-      <!-- 右侧内容 -->
-      <article></article>
-    </main>
-    
-    <!-- 网页的底部-->
-    <footer></footer>
-  </body>
+</head>
+<body>
+    <!-- 创建外围容器 -->
+    <div class="top-bar-wrapper">
+        <!-- 创建内部容器 -->
+        <div class="top-bar">
+            <!-- 右侧的菜单 -->
+            <ul class="shortcut">
+                <li>
+                    <a href="javascript:;">Home</a>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="javascript:;">Posts</a>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="javascript:;">Publications</a>
+                    <i class="fas fa-angle-down"></i>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="javascript:;">Projects</a>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="javascript:;">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
 </html>
