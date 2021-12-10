@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    
+    <style type="text/css">
+        /* 防止内容塌陷 */
+        .clearfix::before,
+        .clearfix::after{
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        html{
+            /* 设置字体 */
+            font-family: Tahoma, Geneva, sans-serif;
+            font-size: 14px;
+            /* 隐藏滚动条，防止破坏布局设计 */
+            /* overflow: hidden; */
+            
+        }
+
+        /* 设置外部容器样式 */
+        .top-bar-wrapper{
+            /* 设置宽度 */
+            width: 100%;
+            /* 设置外部容器的背景颜色 */
+            background-color: rgb(38, 50, 56); 
+            /* 设置外部容器的高度 */
+            height: 70px;
+            /* 设置行高（可以顶替设置外部容器的高度），确保文字居中 */
+            line-height: 70px;
+            /* 设置下边框 */
+            border-bottom: 10px rgb(79, 195, 247) solid
+        }
+
+        /* 设置内部容器 */
+        .top-bar{
+            /* 固定宽度 */
+            width: 1080px;
+            /* 设置水平居中 */
+            margin: 0 auto
+        }
+
+        /* 设置shortcut */
+        .shortcut{
+            float: right;
+        }
+
+        /* 设置li */
+        .shortcut li{
+            float: left;
+        }
+
+        /* 设置top-bar下a的字体 */
+        .top-bar a{
+            font-size: 16px;
+            font-family: "Arial Black", Gadget, sans-serif;
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* 设置top-bar下a被鼠标指上后的字体变化 */
+        .top-bar a:hover{
+            color: rgb(79, 195, 247);
+        }
+        
+        /* 设置top-bar下分割线的样式 */
+        .shortcut .line{
+            width: 2px;
+            height: 18px;
+            background-color: white;
+            margin: 26px 30px; /* 26px是距离顶端的距离；30px是与字体之间的距离 */
+        }
+
+        /* 设置发表物列表的效果 */
+        .shortcut .publication-list{
+            display: none;
+            width: 180px;
+            background-color: rgb(79, 195, 247);
+            position: absolute; /* 设置绝对定位，使其不占用顶端容器的高度 */
+            top: 70px;
+            z-index: 10; /* 设置层级（防止被覆盖效果产生） */
+        }
+
+        /* 当鼠标移到publication-all下面所属部分时，让publication-list显示*/
+        .publication-all:hover .publication-list{
+            display: block;
+        }
+
+        /* 设置publication-list下a的文字样式 */
+        .publication-list a{
+            color: white;
+            float: left;
+            margin: 10px;
+            line-height: 20px;
+        }
+
+        /* 设置鼠标移动到发表物下拉列表中文字时候的效果 */
+        .publication-list a:hover{
+            color: rgb(38, 50, 56);
+        }
+
+        /* 设置主体部分 */
+        .mainbody{
+            /* 固定宽度 */
+            width: 1080px;
+            /* 设置水平居中 */
+            margin: 0 auto;
+            height: 100%;
+            min-height: 600px;
+            background-color: #F7F7F7;
+        }
+
+        /* 设置主体部分发表物类别标题的格式 */
+        .mainbody h1{
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-top: 20px;
+        }
+
+        /* 设置主体部分发表物封面图片部分的格式 */
+        .mainbody .pub-pics{
+            width: 220px;
+            height: 265px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-bottom: 20px;
+            float: left;
+        }
+
+        /* 设置主体部分发表物文本部分的格式 */
+        .mainbody .pub-info{
+            float: left;
+            width: 810px;
+            height: 185px;
+            margin: 0 auto;
+            text-align: justify; /* 文本内容两端对齐 */
+            padding-left: 10px;
+            padding-right: 20px;
+            padding-top: 80px;
+            padding-bottom: 20px;
+        }
+
+        /* 解决锚点偏移的问题 */
+        .mainbody .anchor2 {
+            display: block;
+            position: relative;
+            top: 3035px;  /* 锚点向下偏移的高度，需要随着上方文章内容的不断添加更新一直调整到合适的高度 */
+            visibility: hidden;
+        }
+
+        /* 解决锚点偏移的问题 */
+        .mainbody .anchor3 {
+            display: block;
+            position: relative;
+            top: 280px;  /* 锚点向下偏移的高度，需要随着上方文章内容的不断添加更新一直调整到合适的高度 */
+            visibility: hidden;
+        }
+
+        /* 设置链接点击前（link）和点击后（visited）的颜色 */
+        .mainbody .pub-info a:link,
+        .mainbody .pub-info a:visited {
+            color: rgb(38, 50, 56);
+            text-decoration: none; /* 取消默认的下划线 */
+        }
+
+        /* 设置链接被鼠标指上时（hover）的颜色 */
+        .mainbody .pub-info a:hover {
+            color: rgb(38, 50, 56);
+            text-decoration: underline; /* 显示默认的下划线 */
+        }
+
+        /* 设置链接被点击时（active）的颜色 */
+        .mainbody .pub-info a:active {
+            color: rgb(24, 136, 202);
+            text-decoration: underline; /* 显示默认的下划线 */
+        }
+
+        .mainbody .pub-info .pub-title {
+            font-size: 18px;
+            font-family: "Arial Black", Gadget, sans-serif;
+        }
+
+        .mainbody .pub-info .pub-detail {
+            padding-top: 10px;
+            line-height: 18px;  /* 文字行间距 */
+        }
+
+        .mainbody .pub-info .pub-name {
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(129, 129, 129);
+            padding-top: 5px;
+            line-height: 18px;  /* 文字行间距 */
+        }
+
+        /* 设置底部 */
+        footer{
+            height: 50px; 
+            background-color: rgb(38, 50, 56);
+        }
+
+        /* 设置放回顶部 */
+        .dn {
+            display: none;
+        }
+        .go-top {
+            position: fixed;
+            bottom: 40px;
+            right: 20px;
+            width: 45px;
+            z-index: 99;
+        }
+    </style>
+
+    <!--Javascript-->
+    <script type="text/javascript" src="./myjs.js">
+        $(function() {
+            $(window).on('scroll',function(){
+                var st = $(document).scrollTop();
+                //当滚动条的位置处于距离顶部300像素以下时，跳转链接出现，否则消失
+                if(st>300){
+                    $('#go-top').fadeIn(function(){
+                        $(this).removeClass('dn');
+                    });
+                }else{
+                    $('#go-top').fadeOut(function(){
+                        $(this).addClass('dn');
+                    });
+                }
+            });
+            // 当点击跳转链接后，滚动条跳到0的位置，也就是页面的顶部，页面移动速度是500
+            $('#go-top .go').on('click',function(){
+                $('html,body').animate({'scrollTop':0},500);
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- 创建外围容器 -->
+    <div class="top-bar-wrapper">
+        <!-- 创建内部容器 -->
+        <div class="top-bar">
+            <!-- 顶部导航靠右侧的菜单 -->
+            <ul class="shortcut">
+                <li>
+                    <a href="./index.html">Home</a>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="javascript:;">Posts</a>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li class="publication-all">
+                    <div class="publications">
+                        <a href="./publications.html">Publications</a>
+                    </div>
+                    
+                    <!-- 放置发表物列表 -->
+                    <div class="publication-list">
+                        <a href="#pub-articles">Journal Articles</a>
+
+                        <a href="#pub-reports">Technical Reports</a>
+
+                        <a href="#pub-datasets">Datasets</a>
+                        
+                    </div>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="./projects.html">Projects</a>
+                </li>
+
+                <!-- 分割线 -->
+                <li class="line"></li>
+
+                <li>
+                    <a href="javascript:;">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 创建网页主体-->
+    <main class="mainbody clearfix">
+        <div>
+            <a class="anchor1" id="pub-articles"></a>
+            <h1 style="font-size: 20px; font-weight: bold;">Journal Articles</h1>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba011.png" alt="article011">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://www.frontiersin.org/articles/10.3389/frwa.2021.730370/full" target="_blank">Growing spatial overlap between dam-related flooding, cropland and domestic water points: A Water–Energy–Food nexus management challenge in Malawi and Ghana</a></span>
+            <br>
+            <span><h2 class="pub-detail">08/10/2021 In: <strong>Frontiers in Water</strong>, 3, 730370. DOI: <a href="https://doi.org/10.3389/frwa.2021.730370" target="_blank">10.3389/frwa.2021.730370</a></h2></span>
+            <span><h2 class="pub-name">Chengxiu Li, <strong>Weiyu Yu</strong>, Mawuli Dzodzomenyo, Moses Asamoah, Catherine Tlotlo Kerapetse, Matt Kandel, Jim Wright*</h2></span>
+        </div>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba010.png" alt="article010">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://www.sciencedirect.com/science/article/pii/S014362282100165X" target="_blank">Mapping access to basic hygiene services in low- and middle-income countries: A cross-sectional case study of geospatial disparities</a></span>
+            <br>
+            <span><h2 class="pub-detail">06/09/2021 In: <strong>Applied Geography</strong>, 135, 102549. DOI: <a href="https://doi.org/10.1016/j.apgeog.2021.102549" target="_blank">10.1016/j.apgeog.2021.102549</a></h2></span>
+            <span><h2 class="pub-name"><strong>Weiyu Yu</strong>, Robert E. S. Bain, Jie Yu, Victor Alegana, Winfred Dotse-Gborgbortsi, Yi Lin*, Jim Wright</h2></span>
+        </div>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba009.png" alt="article009">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0255286" target="_blank">A mixed methods study to evaluate participatory mapping for rural water safety planning in western Kenya</a></span>
+            <br>
+            <span><h2 class="pub-detail">28/07/2021 In: <strong>PLoS ONE</strong>, 16 (7), e0255286. DOI: <a href="https://doi.org/10.1371/journal.pone.0255286" target="_blank">10.1371/journal.pone.0255286</a></h2></span>
+            <span><h2 class="pub-name">Joseph Okotto-Okotto, <strong>Weiyu Yu</strong>, Emmah Kwoba, Samuel M. Thumbi, Lorna Grace Okotto, Peggy Wanza, Diogo Trajano Gomes da Silva, Jim Wright*</h2></span>
+        </div>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba008.png" alt="article008">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://www.nature.com/articles/s41591-021-01234-8" target="_blank">Variation in SARS-CoV-2 outbreaks across sub-Saharan Africa</a></span>
+            <br>
+            <span><h2 class="pub-detail">02/02/2021 In: <strong>Nature Medicine</strong>, 27 (3), 447-453. DOI: <a href="https://doi.org/10.1038/s41591-021-01234-8" target="_blank">10.1038/s41591-021-01234-8</a></h2></span>
+            <span><h2 class="pub-name">Benjamin L. Rice*, Akshaya Annapragada, Rachel E. Baker, Marjolein Bruijning, Winfred Dotse-Gborgbortsi, Keitly Mensah, Ian F. Miller, Nkengafac Villyen Motaze, Antso Raherinandrasana, Malavika Rajeev, Julio Rakotonirina, Tanjona Ramiadantsoa, Fidisoa Rasambainarivo, <strong>Weiyu Yu</strong>, Bryan T. Grenfell, Andrew J. Tatem, C. Jessica E. Metcalf</h2></span>
+        </div>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba007.png" alt="article007">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://www.mdpi.com/1660-4601/17/24/9192" target="_blank">Effect of inter-observer variation on the association between contamination hazards and the microbiological quality of water sources: A longitudinal study</a></span>
+            <br>
+            <span><h2 class="pub-detail">09/12/2020 In: <strong>International Journal of Environmental Research and Public Health</strong>, 17 (24), 9192. DOI: <a href="https://doi.org/10.3390/ijerph17249192" target="_blank">10.3390/ijerph17249192</a></h2></span>
+            <span><h2 class="pub-name">Joseph Okotto-Okotto, Diogo Trajano Gomes da Silva, Emmah Kwoba, Samuel M. Thumbi, Peggy Wanza, <strong>Weiyu Yu</strong>, Jim A. Wright*</h2></span>
+        </div>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba006.png" alt="article006">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://www.sciencedirect.com/science/article/pii/S1438463920305484" target="_blank">A longitudinal study of the association between domestic contact with livestock and contamination of household point-of-use stored drinking water in rural Siaya County (Kenya)</a></span>
+            <br>
+            <span><h2 class="pub-detail">07/09/2020 In: <strong>International Journal of Hygiene and Environmental Health</strong>, 230, 113602. DOI: <a href="https://doi.org/10.1016/j.ijheh.2020.113602" target="_blank">10.1016/j.ijheh.2020.113602</a></h2></span>
+            <span><h2 class="pub-name">Diogo Trajano Gomes da Silva*, James Ebdon, Joseph Okotto-Okotto, Frederick Ade, Oscar Mito, Peggy Wanza, Emmah Kwoba, Thumbi Mwangi, <strong>Weiyu Yu</strong>, Jim A. Wright</h2></span>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba005.png" alt="article005"> 
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://link.springer.com/article/10.1007/s12403-019-00339-3" target="_blank">An assessment of inter-observer agreement in water source classification and sanitary risk observations</a></span>
+            <br>
+            <span><h2 class="pub-detail">24/12/2019 In: <strong>Exposure and Health</strong>, 1-14. DOI: <a href="https://doi.org/10.1007/s12403-019-00339-3" target="_blank">10.1007/s12403-019-00339-3</a></h2></span>
+            <span><h2 class="pub-name">Joseph Okotto-Okotto*, Peggy Wanza, Emmaha Kwoba, <strong>Weiyu Yu</strong>, Mawuli Dzodzomenyo, S. M. Thumbi, Diogo Gomes da Silva, Jim A. Wright*</h2></span>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba004.png" alt="article004">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0216923" target="_blank">Mapping access to domestic water supplies in developing countries: An illustrative assessment for Kenya using maximum entropy model</a></span>
+            <br>
+            <span><h2 class="pub-detail">17/05/2019 In: <strong>PLoS ONE</strong>, 14 (5), 1-19. [e0216923] DOI: <a href="https://doi.org/10.1371/journal.pone.0216923" target="_blank">10.1371/journal.pone.0216923</a></h2></span>
+            <span><h2 class="pub-name"><strong>Weiyu Yu</strong>*, Nicola Wardrop, Robert E. S. Bain, Victor Alegana, Laura J. Graham, Jim A. Wright</h2></span>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba003.png" alt="article003">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://www.sciencedirect.com/science/article/abs/pii/S1438463916305429" target="_blank">Integration of population census and water point mapping data – A case study of Cambodia, Liberia and Tanzania</a></span>
+            <br>
+            <span><h2 class="pub-detail">04/05/2017 In: <strong>International Journal of Hygiene and Environmental Health</strong>, 220 (5), 888-899. DOI: <a href="https://doi.org/10.1016/j.ijheh.2017.04.006" target="_blank">10.1016/j.ijheh.2017.04.006</a></h2></span>
+            <span><h2 class="pub-name"><strong>Weiyu Yu</strong>*, Nicola Wardrop, Robert E. S. Bain, Jim A. Wright*</h2></span>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba002.png" alt="article002">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0151645" target="_blank">A global perspective on drinking-water and sanitation classification: an evaluation of census content</a></span>
+            <br>
+            <span><h2 class="pub-detail">17/03/2016 In: <strong>PLoS ONE</strong>, 11 (3), 1-17. [e0151645] DOI: <a href="https://doi.org/10.1371/journal.pone.0151645" target="_blank">10.1371/journal.pone.0151645</a></h2></span>
+            <span><h2 class="pub-name"><strong>Weiyu Yu</strong>*, Nicola Wardrop, Robert E. S. Bain, Yanzhao Lin, Ce Zhang, Jim A. Wright*</h2></span>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./puba001.png" alt="article001">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://equityhealthj.biomedcentral.com/articles/10.1186/s12939-014-0113-3" target="_blank">A cross-sectional ecological study of spatial scale and geographic inequality in access to drinking-water and sanitation</a></span>
+            <br>
+            <span><h2 class="pub-detail">26/11/2014 In: <strong>International Journal for Equity in Health</strong>, 13 (113), 1-15. DOI: <a href="https://doi.org/10.1186/s12939-014-0113-3" target="_blank">10.1186/s12939-014-0113-3</a></h2></span>
+            <span><h2 class="pub-name"><strong>Weiyu Yu</strong>*, Robert E. S. Bain, Shawky Mansour, Jim A. Wright</h2></span>
+        </div>
+
+        <br>
+
+        <div>
+            <a class="anchor2" id="pub-reports"></a>
+            <h1 style="font-size: 20px; font-weight: bold;">Reports</h1>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./pubr001.png" alt="report001">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="javascript:;" target="_blank">Drinking-water under a ‘one health’ lens: participatory mapping final report</a></span>
+            <br>
+            <span><h2 class="pub-detail">2019 VIRED International, Rabuour, Kenya</h2></span>
+            <span><h2 class="pub-name">Joseph Okotto-Okotto, <strong>Weiyu Yu</strong>, S. M. Thumbi, Emmiesusan Kwoba, Peggy Wanza, Diogo Gomes da Silva, Jim A. Wright</h2></span>
+        </div>
+
+        <div>
+            <a class="anchor3" id="pub-datasets"></a>
+            <h1 style="font-size: 20px; font-weight: bold;">Datasets</h1>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./pubd002.png" alt="dataset002">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://reshare.ukdataservice.ac.uk/853705/" target="_blank">Water sources and contamination hazards in Siaya County, Kenya 2018</a></span>
+            <br>
+            <span><h2 class="pub-detail">25/09/2019 Data Collection, Colchester, Essex: <strong>UK Data Service</strong> DOI: <a href="http://dx.doi.org/10.5255/UKDA-SN-853705" target="_blank">10.5255/UKDA-SN-853705</a></h2></span>
+            <span><h2 class="pub-name"><strong>Weiyu Yu</strong>, Emmiesusan Kwoba, Thumbi Mwangi, Peggy Wanza, Jim A. Wright, Joseph Okotto-Okotto</h2></span>
+        </div>
+
+        <br>
+
+        <div class="pub-pics">
+            <img width=200 height=265 style="box-shadow: 0 0 8px rgba(0, 0, 0, .3);" src="./pubd001.png" alt="dataset001">
+        </div>
+        <div class="pub-info">
+            <span><a class="pub-title" href="https://reshare.ukdataservice.ac.uk/853860/" target="_blank">Sanitary risk observation of hazards at surrounding rural water sources in Siaya County, Kenya 2018-2019</a></span>
+            <br>
+            <span><h2 class="pub-detail">18/09/2019 Data Collection, Colchester, Essex: <strong>UK Data Service</strong> DOI: <a href="http://dx.doi.org/10.5255/UKDA-SN-853860" target="_blank">10.5255/UKDA-SN-853860</a></h2></span>
+            <span><h2 class="pub-name">Peggy Wanza, Jim A. Wright, Thumbi Mwangi, Emmiesusan Kwoba, <strong>Weiyu Yu</strong>, James Oigo, John Ouko, Joseph Okotto-Okotto</h2></span>
+        </div>
+
+    </main>
+
+    <div class="go-top dn" id="go-top">
+        <a href="javascript:;" class="go"><img src="链接"></a>
+    </div>
+
+    <!-- 网页的底部-->
+    <footer></footer>
+</body>
+</html>
